@@ -40,7 +40,7 @@ import java.util.Map;
 
 import cmu.xprize.comp_pointtap.HA_CONST;
 import cmu.xprize.rthomescreen.R;
-import cmu.xprize.util.CErrorManager;
+import cmu.xprize.comp_logging.CErrorManager;
 import cmu.xprize.util.IRoboTutor;
 import cmu.xprize.util.TCONST;
 

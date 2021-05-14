@@ -1,1 +1,1 @@
-include ':app', ':util', ':comp_pointtap'
+include ':app', ':util', ':comp_pointtap', ':comp_configuration', ':comp_logging'

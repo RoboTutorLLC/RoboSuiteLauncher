@@ -1,7 +1,6 @@
 //*********************************************************************************
 //
-//    Copyright(c) 2016 Carnegie Mellon University. All Rights Reserved.
-//    Copyright(c) Kevin Willows All Rights Reserved
+//    Copyright(c) 2016-2021  RoboTutorLLC All Rights Reserved
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -37,6 +36,8 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import cmu.xprize.comp_logging.CErrorManager;
 
 
 /**
@@ -77,6 +78,74 @@ public class JSON_Helper {
         return cacheData(fileName, TCONST.DEFINED);
     }
 
+    static public String createValueAcronym(String jsonData) {
+        /*
+            @params: jsonData - A serialised jsonString, e.g.
+            {
+                "config_version": "ftttfNULLfCD2", → compute instead
+                "language_override": false,
+                "show_tutorversion": true,
+                "show_debug_launcher": true,
+                "language_switcher": true,
+                "no_asr_apps": false,
+                "language_feature_id": "LANG_NULL", → NULL | EN | SW
+                "show_demo_vids": false,
+                "menu_type": "CD2" → 1 or 2 in acronym
+
+            }
+
+            The config_version will be replaced with a custom acronym, which is generated below.
+
+         */
+        String outputAcronym = new String();
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            JSONArray keys = jsonObject.names();
+
+            for (int i=0; i<keys.length(); i++) {
+                String key = keys.getString(i);
+                if (key == "language_feature_id") {
+                    /*
+                        This is checking for the key: "language_feature_id".
+                        Replacing the values with the corresponding acronyms:
+                         { "LANG_NULL" with "NULL", "EN" with "EN", "SW" with "SW".
+                     */
+                    String value = jsonObject.getString(key);
+                    if (value == "LANG_NULL") {
+                        outputAcronym += "NULL";
+                    }
+                    else if (value == "EN") {
+                        outputAcronym += "EN";
+                    }
+                    else if  (value == "SW") {
+                        outputAcronym +="SW";
+                    }
+                }
+                else if (key == "menu_type") {
+                    /*
+                        This is checking for the key: "menu_type".
+                        Replacing the values with the corresponding acronyms:
+                        Menu Type can have the following values: CD2 and CD1
+                        We are only using the last digit in the acronym.
+                     */
+                    String value = jsonObject.getString(key);
+                    outputAcronym += value.charAt(value.length()-1);
+                }
+                else {
+                    /*
+                        For every boolean value, we are only using their first character.
+                     */
+                    Boolean value = jsonObject.getBoolean(key);
+                    outputAcronym += value.toString().charAt(0);
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return outputAcronym;
+    }
 
     static public String cacheData(String fileName, String localcacheSource) {
 
@@ -120,6 +189,7 @@ public class JSON_Helper {
                 // Filter Comments out of the json source
                 //
                 while ((line = br.readLine()) != null) {
+
                     line = line.replaceFirst("//.*$","");
                     buffer.append(line);
                 }
@@ -309,15 +379,18 @@ public class JSON_Helper {
 
                             // Throw away comment fields
                             if(!key.equals("COMMENT") && !key.equals("type")) {
-                                Log.d(TAG, "Inflating Object: " + key);
+
+                                if(DBG) {
+                                    Log.d(TAG, "Inflating Object: " + key);
+                                }
 
                                 JSONObject elem = null;
 
                                 if(isPrimitive) {
                                     if (elemClass.isArray()) {
-
-                                        Log.d(TAG, "here");
-
+//
+//                                        Log.d(TAG, "here");
+//
                                         // TODO: This is an experimental implemenation to allow arrays on the right side of HashMaps.
                                         // TODO: Validate
                                         //
@@ -407,11 +480,15 @@ public class JSON_Helper {
 
                                         if (scope != null) {
                                             scope.put(key, (IScriptable) eObj);
-                                            Log.i(TAG, "Adding to scope: " + key);
+                                            if(DBG) {
+                                                Log.i(TAG, "Adding to scope: " + key);
+                                            }
                                         }
-                                    } else {
-                                        field_Map.put(key, eObj);
                                     }
+
+                                    // Add the entry to the HashMap
+                                    //
+                                    field_Map.put(key, eObj);
                                 }
                             }
                         }
@@ -424,14 +501,19 @@ public class JSON_Helper {
                         //
                         if (fieldClass.isArray()) {
 
+                            // uhq
                             // Get the array on the 1st dimension for the field (attribute)
-                            nArr = jsonObj.getJSONArray(fieldName);
+                            try {
+                                nArr = jsonObj.getJSONArray(fieldName);
+                                Class<?> elemClass = fieldClass.getComponentType();
+                                Object field_Array = Array.newInstance(elemClass, nArr.length());
+                                field.set(self, parseArray(jsonObj, self, classMap, scope, nArr, elemClass, field_Array));
+                            } catch(Exception e){
+                                JSONArray emptyArray = new JSONArray();
+                                Object field_Array = Array.newInstance(String.class, 0);
+                                field.set(self, parseArray(jsonObj, self, classMap, scope, emptyArray, String.class, field_Array));
+                            }
 
-                            Class<?> elemClass = fieldClass.getComponentType();
-
-                            Object field_Array = Array.newInstance(elemClass, nArr.length());
-
-                            field.set(self, parseArray(jsonObj, self, classMap, scope, nArr, elemClass, field_Array));
                         }
 
                         // otherwise assume it is a discrete object of ILoadable type
@@ -455,7 +537,9 @@ public class JSON_Helper {
                 }
 
             } catch (Exception e) {
+
                 CErrorManager.logEvent(TAG, "ERROR: parseSelf:", e, true);
+
             }
         }
     }
@@ -541,7 +625,7 @@ public class JSON_Helper {
             }
         }
         catch(Exception e) {
-            CErrorManager.logEvent(TAG, "Json Array Format Error: ", e, false);
+            CErrorManager.logEvent(TAG, "Json Array Format Error: ", e, true);
         }
 
         return field_Array;

@@ -32,7 +32,7 @@ import android.widget.ViewAnimator;
 import java.util.ArrayList;
 
 import cmu.xprize.rthomescreen.R;
-import cmu.xprize.util.ILogManager;
+import cmu.xprize.comp_logging.ILogManager;
 
 public class CMasterContainer extends RelativeLayout {
 

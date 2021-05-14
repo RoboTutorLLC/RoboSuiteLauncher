@@ -1,7 +1,6 @@
 //*********************************************************************************
 //
-//    Copyright(c) 2016 Carnegie Mellon University. All Rights Reserved.
-//    Copyright(c) Kevin Willows All Rights Reserved
+//    Copyright(c) 2016-2017  Kevin Willows All Rights Reserved
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,11 +22,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
 import cmu.xprize.common.R;
+
+import static cmu.xprize.util.TCONST.QGRAPH_MSG;
 
 public class CErrorDialog implements View.OnClickListener {
 
@@ -62,6 +64,8 @@ public class CErrorDialog implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        Log.v(QGRAPH_MSG, "event.click: " + " CErrorDialog:exit");
+
         System.exit(1);
     }
 }
