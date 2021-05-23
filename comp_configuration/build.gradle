@@ -1,0 +1,94 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    compileSdkVersion rootProject.ext.rtCompileSdkVersion
+    buildToolsVersion rootProject.ext.rtBuildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.rtMinSdkVersion
+        targetSdkVersion rootProject.ext.rtTargetSdkVersion
+        versionCode rootProject.ext.rtVersionCode
+        versionName rootProject.ext.rtVersionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    def keystorePropertiesFile = rootProject.file("keystore.properties")
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+    signingConfigs {
+        android {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        def BOOLEAN = "boolean"
+        def STRING  = "String"
+        def TRUE    = "true"
+        def FALSE   = "false"
+
+        def LANGUAGE_FEATURE_ID = "LANGUAGE_FEATURE_ID"
+        def LANGUAGE_ENGLISH    = "\"LANG_EN\""
+        def LANGUAGE_SWAHILI    = "\"LANG_SW\""
+
+        debug {
+            buildConfigField "String", "WIFI_CONFIG", "\"DEBUG\""
+            debuggable true
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.android
+        }
+
+        xprize {
+            buildConfigField "String", "WIFI_CONFIG", "\"XPRIZE\""
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.android
+        }
+
+        local {
+            buildConfigField "String", "WIFI_CONFIG", "\"LOCAL\""
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.android
+        }
+
+        vmc {
+            buildConfigField "String", "WIFI_CONFIG", "\"VMC\""
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.android
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation project(path: ':comp_logging')
+    implementation project(path: ':util')
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}

@@ -3,9 +3,10 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:4.1.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -15,27 +16,28 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        google()
     }
 
     // Global variables common to all modules
     // see: http://tools.android.com/tech-docs/new-build-system/tips
     //
     ext {
-        rtCompileSdkVersion=25          //Integer
-        rtBuildToolsVersion="25.0.1"    //String
+        rtCompileSdkVersion=30          //Integer
+        rtBuildToolsVersion="30.0.3"    //String
 
-        rtMinSdkVersion=23
+        rtMinSdkVersion=19
 
         // Note that using target version 22 bypasses the new run-time permissions found
         // in Marshmallow 23
         //
-        rtTargetSdkVersion=23
+        rtTargetSdkVersion=22
 
         rtVersionCode=1
 
         // Semantic versioning description:
         // <Milestone release> <Feature Release> <Patch release> <Asset Compatibility ID>
-        rtVersionName="1.0.0"
+        rtVersionName="1.7.5.6"
     }
 }
 

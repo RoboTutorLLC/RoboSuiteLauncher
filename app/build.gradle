@@ -28,8 +28,14 @@ android {
 
     buildTypes {
 
+        debug {
+            buildConfigField "String", "WIFI_CONFIG", "\"DEBUG\""
+            debuggable true
+        }
 
         release {
+            buildConfigField "String", "WIFI_CONFIG", "\"RELEASE\""
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
@@ -68,11 +74,13 @@ android {
         variant.outputs.each { output ->
             def project = "RoboLaunch"
             def SEP = "."
-            def buildType = variant.variantData.variantConfiguration.buildType.name
+            //def buildType = variant.variantData.variantConfiguration.buildType.name
+            def buildType = variant.buildType.name
             def version = variant.versionName
 
             def apkName = project + SEP + buildType + SEP + version + ".apk"
-            output.outputFile = new File(output.outputFile.parent, apkName)
+            //output.outputFile = new File(output.outputFile.parent, apkName)
+            output.outputFileName = apkName
         }
 
     }
@@ -81,6 +89,8 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':comp_configuration')
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

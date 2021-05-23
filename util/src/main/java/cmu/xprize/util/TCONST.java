@@ -1,7 +1,6 @@
 //*********************************************************************************
 //
-//    Copyright(c) 2016 Carnegie Mellon University. All Rights Reserved.
-//    Copyright(c) Kevin Willows All Rights Reserved
+//    Copyright(c) 2016-2017  Kevin Willows All Rights Reserved
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -21,14 +20,11 @@ package cmu.xprize.util;
 
 // global tutor constants
 
-import android.content.Context;
+import android.os.Environment;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class TCONST {
-
-//    sdcard/robotutor_assets/assets/audio/en/cmu/xprize/activity_selector/d39950ec96e6a5361508996ce7ae6444.mp3
 
     // These features are based on the current tutor selection model
     // When no tutor has been selected it should run the tutor select
@@ -36,12 +32,24 @@ public class TCONST {
     // the user wants to select another tutor.
     //
 
-    public static final String FTR_TUTOR_SELECT       = "FTR_TUTOR_SELECT";
-    public static final String FTR_DIFFICULTY_SELECT  = "FTR_DIFFICULTY_SELECT";
+    public static final String FTR_TUTOR_SELECT       = "FTR_TUTOR_SELECT"; // these are never read anymore, but are still used as features
+    public static final String FTR_DEBUG_SELECT       = "FTR_DEBUG_SELECT";
+    public static final String FTR_DEBUG_LAUNCH       = "FTR_DEBUG_LAUNCH";
 
-    // RoboTutor Version spec index meaning 0.1.2.3
-    // Given 4.23.2.3
-    // Major release 4 | Feature release 23 | Fix release 2 | compatible Asset Version 3
+    public static final String FTR_GOODBYE = "GOODBYE";
+    public static final int NUM_GOODBYE_SOUND_CLIPS = 9;    // make sure this matches the number of sound clips in
+                                                            // the "EXIT_BUTTON_BEHAVIOR" object in activity_selector/animator_graph.json
+
+    public static final String SKILL_WRITING    = "letters";
+    public static final String SKILL_STORIES    = "stories";
+    public static final String SKILL_MATH       = "numbers";
+
+    public static final String FINISH           = "FINISH";
+
+
+    // RoboTutor Version spec Index meaning 0.1.2.3
+    // Given 4.23.9.8
+    // Major release 4 | Feature release 23 | Fix release 9 | compatible Asset Version 8
     //
     public static final int MAJOR_VERSION   = 0;
     public static final int FEATURE_RELEASE = 1;
@@ -62,18 +70,23 @@ public class TCONST {
 
     // They will arrive in files named - RoboTutor_AssetA.0.1.0.zip
     //
-    public static final String ROBOTUTOR_ASSET_PATTERN = "RTAsset_";
+    public static final String ROBOTUTOR_ASSET_PATTERN = "rtasset_";
+    public static final String CODE_DROP_1_ASSET_PATTERN = "codedrop1_";
+    public static final String CODE_DROP_2_ASSET_PATTERN = "codedrop2_";
+    public static final String PROTOTYPE_ASSET_PATTERN = "protoassets_";
+    public static final String QA_ASSET_PATTERN = "qa_assets";
+    public static final String ENGLISH_ASSET_PATTERN = "English_";
+    public static final String SWAHILI_ASSET_PATTERN = "Swahili_";
 
     public static final String COMMAND      = "COMMAND";
     public static final String MODULE       = "MODULE";
+    public static final String QUEUE        = "QUEUE";
     public static final String NODE         = "NODE";
     public static final String CONDITION    = "CONDITION";
 
     public static final String NUMDATA_HEADER   = "{\n" + "\"dataSource\": ";
     public static final boolean ADD_FEATURE     = true;
     public static final boolean DEL_FEATURE     = false;
-    public static final int     GUID_LEN        = 5;
-    public static final String  GUID_UPDATE     = "GUIDUPDATE";
 
     public static final String  FTR_PLACE_      = "FTR_PLACE_";
     public static final String  _USED           = "_USED";
@@ -85,7 +98,7 @@ public class TCONST {
     public static final int     MAX_DIGITS      = 4;
     public static final String  NO_DATASOURCE   = "";
     public static final String  DATA_PREFIX     = "DATA_";
-    public static final String DATA_PATH        = "data";
+    public static final String  DATA_PATH        = "data";
 
     public static final String FW_PREPLISTENER  = "FW_PREPLISTENER";
     public static final String FW_TTS           = "FW_TTS";
@@ -95,12 +108,34 @@ public class TCONST {
     public static final String SAY_STIMULUS     = "FTR_SAY";
     public static final String SHOW_STIMULUS    = "FTR_SHOW";
 
+
+    public static final String ASM_DIGIT_OR_OVERHEAD_CORRECT   = "ASM_DIGIT_OR_OVERHEAD_CORRECT";
+    public static final String ASM_DIGIT_OR_OVERHEAD_WRONG     = "ASM_DIGIT_OR_OVERHEAD_WRONG";
+    public static final String ASM_CLICK_ON_DOT                = "ASM_CLICK_ON_DOT";
+    public static final String ASM_ALL_DOTS_DOWN               = "ASM_ALL_DOTS_DOWN";
+
+    public static final String ASM_ADD                         = "ASM_ADD";
+    public static final String ASM_ADD_PROMPT                  = "ASM_ADD_PROMPT";
+    public static final String ASM_ADD_PROMPT_COUNT_FROM       = "ASM_ADD_PROMPT_COUNT_FROM";
+
+    public static final String ASM_SUB                          = "ASM_SUB";
+    public static final String ASM_SUB_PROMPT                   = "ASM_SUB_PROMPT";
+
+    public static final String ASM_MULTI                        = "ASM_MULTI";
+    public static final String ASM_MULTI_PROMPT                 = "ASM_MULTI_PROMPT";
+    public static final String ASM_RA_START                     = "ASM_RA_START";
+    public static final String ASM_NEXT_NUMBER                  = "ASM_NEXT_NUMBER";
+    public static final String ASM_NEXT_RESULT                  = "ASM_NEXT_RESULT";
+    public static final String ASM_RESULT_FIRST_TWO             = "ASM_RESULT_FIRST_TWO";
+    public static final String ASM_RESULT_NEXT_OR_LAST          = "ASM_RESULT_NEXT_OR_LAST";
+    public static final String ASM_REPEATED_ADD_DOWN            = "ASM_REPEATED_ADD_DOWN";
+
     public static final String TYPE_CTUTOR      = "CTutor";
     public static final String TYPE_CSCENEGRAPH = "CSceneGraph";
     public static final String TYPE_CTUTORGRAPH = "CTutorGraph";
     public static final String EVENT_SCENEQUEUE = "Scene Queue Event";
     public static final String EVENT_TUTORGRAPH = "Tutor Graph Event";
-    public static final String AUDIO_REF        = "audio_ref";
+//    public static final String AUDIO_REF        = "audio_ref";
     public static final String SET_BANNER_COLOR = "SET_BANNER_COLOR";
     public static final String LAST_ATTEMPT     = "FTR_LASTATTEMPT";
 
@@ -146,8 +181,6 @@ public class TCONST {
     public static final String INVISIBLE           = "INVISIBLE";
     public static final String GONE                = "GONE";
 
-    public static final String ENGINEMESSAGE       = "EngineMessage: ";
-
     public static final String ASK_SELECTION       = "ASK_SELECTION";
     public static final String ASK_BUTTON_ID       = "ASK_BUTTON_ID";
     public static final String CANCEL_POINTAT      = "CANCEL_POINTAT";
@@ -157,13 +190,114 @@ public class TCONST {
     public static final String RIGHTLANE           = "RIGHT";
 
     public static final String STORY_INTENT        = "story_reading";
+    public static final String QUESTIONS_INTENT        = "story_questions";
     public static final String ON_CLICK            = "ON_CLICK";
+    public static final String ENCODED_FOLDER      = "[encfolder]";
+    public static final String SHARED_MATH         = "[sharedmath]";
+    public static final String SHARED_MATH_FOLDER = "shared/shared_math";
+    public static final String SHARED_LITERACY     = "[sharedliteracy]";
+    public static final String SHARED_LITERACY_AUDIO_FOLDER = "shared/shared_lit"; // TODO fix this abominable inconsistency
+    public static final String SHARED_LITERACY_IMAGE_FOLDER = "shared/shared_literacy";
+    public static final String SONG                = "[song]";
+    public static final String SONG_FOLDER         = "?";
+    public static final String STORY_PATH          = "cmu/xprize/story_reading/";
+    public static final String WORD_PROBLEMS       = "[wordproblems]";
+    public static final String PUNC_STORY = "[punc]";
 
-    public static final String SKILL_WRITING    = "letters";
-    public static final String SKILL_READING    = "stories";
-    public static final String SKILL_MATH       = "numbers";
-    public static final String SKILL_SHAPES     = "shapes";
-    public static final String SKILL_UNSET      = "SKILL_UNSET";
+    public static final String LOCAL_FILE          = "[local_file]";
+    public static final String DOWNLOAD_PATH       = "/sdcard/Download";
+    public static final String DOWNLOAD_RT_PATH    = "/sdcard/Download/RoboTutor";
+    public static final String DOWNLOAD_RT_TUTOR   = "/sdcard/Download/RoboTutor/assets";
+
+    public static final String DEBUG_FILE_PREFIX = "[debug_file]";
+    public static final String DEBUG_RT_PATH       = "/sdcard/robo_debug";
+
+    public static final String ARITHMETIC_DATA     = "tutors/add_subtract";
+    public static final String AKIRA_DATA          = "tutors/akira";
+    public static final String BUBBLEPOP_DATA      = "tutors/bubble_pop";
+    public static final String STORY_DATA          = "tutors/story_reading";
+    public static final String WRITING_DATA        = "tutors/word_copy";
+
+    public static final String FTR_USER_HEAR       = "FTR_USER_HEAR";
+    public static final String FTR_USER_READ       = "FTR_USER_READ";
+    public static final String FTR_USER_ECHO       = "FTR_USER_ECHO";
+    public static final String FTR_USER_HIDE       = "FTR_USER_HIDE";
+    public static final String FTR_USER_REVEAL     = "FTR_USER_REVEAL";
+    public static final String FTR_USER_PARROT     = "FTR_USER_PARROT";
+    public static final String FTR_USER_READING    = "FTR_USER_READING";
+    // UHQ
+    public static final String FTR_GEN             = "FTR_GEN";
+    public static final String FTR_PIC             = "FTR_PIC";
+    public static final String FTR_CLO             = "FTR_CLO";
+    public static final String STOP_AUDIO          = "STOP_AUDIO";
+    public static final String RTC_VAR_CLOZEWORD   = ".clozeWord";
+    public static final String REMOVE_CLOZE_FROM_BLANK = "REMOVE_CLOZE_FROM_BLANK";
+
+
+    public static final String NARRATE_STORY       = "NARRATE_STORY";
+    public static final String TRACK_NARRATION     = "TRACK_NARRATION";
+    public static final String START_NARRATION     = "START_NARRATION";
+    public static final String SPEAK_UTTERANCE     = "SPEAK_UTTERANCE";
+
+    public static final String SPEAK_EVENT         = "SPEAK_EVENT";
+
+    public static final int    INITSPLIT           = -1;
+    public static final String SENTENCE_SPACE      = "  ";
+    public static final String WORD_SPACE          = " ";
+    public static final String NO_SPACE            = "";
+    public static final int    MAX_AKDATA          = 10;
+
+    public static final String FTR_COMPLETE      = "FTR_COMPLETE";
+    public static final String FTR_PROMPT        = "FTR_PROMPT";
+    public static final String FTR_PAGE_PROMPT   = "FTR_PAGE_PROMPT";
+
+    public static final String START_PROGRESSIVE_UPDATE   = "START_PROGRESSIVE_UPDATE";
+    public static final String START_INDETERMINATE_UPDATE = "START_INDETERMINATE_UPDATE";
+    public static final String UPDATE_PROGRESS            = "UPDATE_PROGRESS";
+    public static final String PROGRESS_TITLE             = "PROGRESS_TITLE";
+    public static final String PROGRESS_MSG1              = "PROGRESS_MSG1";
+    public static final String PROGRESS_MSG2              = "PROGRESS_MSG2";
+    public static final String ASSET_UPDATE_MSG           = "Installing Assets: ";
+    public static final String INT_FIELD                  = "INT_FIELD";
+    public static final String PLEASE_WAIT                = " - Please Wait.";
+
+    public static final String TUTOR_NATIVE               = "native";
+    public static final String TRACK_COMPLETE             = "TRACK_COMPLETE";
+
+    public static final String NEXT_PAGE                  = "NEXT_PAGE";
+    public static final String CLOZE_CORRECT              = "CLOZE_CORRECT";
+    public static final String CLOZE_WRONG                = "CLOZE_WRONG";
+    public static final String PICMATCH_CORRECT              = "PICMATCH_CORRECT";
+    public static final String PICMATCH_WRONG                = "PICMATCH_WRONG";
+    public static final String NEXT_SCENE                 = "NEXT_SCENE";
+    public static final String NEXT_WORD                  = "NEXT_WORD";
+
+
+    // Core log message types - anumation scenegraph and queued scenegraph
+    //
+    public static final String TUTOR_STATE_MSG            = "TSTag";
+    public static final String GRAPH_MSG                  = "RTag";
+    public static final String QGRAPH_MSG                 = "RQTag";
+    public static final String LTKPLUS_MSG                = "RLTag";
+    public static final String LOGSTATE                   = "logState";
+    public static final String BATTERY_MSG                = "Battery";
+
+    public static final String AUDIO_EVENT                = "AUDIO_EVENT";
+    public static final String TYPE_AUDIO                 = "type_audio";
+    public static final String TRACK_SEGMENT              = "TRACK_SEGMENT";
+
+    // for logging and tracking student performance
+    public static final String PERFORMANCE_TAG                  = "PERFORMANCE_TAG";
+    public static final boolean CONSIDER_STUDENT_PERFORMANCE    = true;
+    public static final boolean OVERRIDE_SELF_ASSESSMENT        = false;
+    public static final double HIGH_PERFORMANCE_THRESHOLD       = 0.9; // percent to be upgraded a level
+    public static final double MID_PERFORMANCE_THRESHOLD        = 0.5; // percent to pass
+    public static final int MIN_ATTEMPTS_TO_GRADE               = 5;   // minimum number of attempts to be graded
+
+    public static final String DEFAULT_STUDENT_ID = "DEBUG";
+    public static final String STUDENT_ID_VAR = "studentId";
+    public static final String SESSION_ID_VAR = "sessionId";
+    public static final String LAST_TUTOR = "LAST_TUTOR_PLAYED";
 
 
     static public HashMap<String, Integer> colorMap = new HashMap<String,Integer>();
@@ -186,6 +320,8 @@ public class TCONST {
     public static final String COLORERROR          = "error";
     public static final String COLORNORMAL         = "normal";
     public static final String COLORNONE           = "none";
+
+    public static final int STROKE_STIM_UNDERLINE  = 5;
 
 
     static public HashMap<String, String> fontMap = new HashMap<String, String>();
@@ -217,6 +353,7 @@ public class TCONST {
     public static final String LANG_EFFECT = "LANG_EFFECT";
     public static final String LANG_EN     = "LANG_EN";
     public static final String LANG_SW     = "LANG_SW";
+    public static final String MEDIA_STORY = "story";
 
     // This maps features to 2 letter codes used to build filepaths.
     static {
@@ -233,9 +370,10 @@ public class TCONST {
 
     static final public String BASE_ASSETS        = "assets";
     public static final String STORY_ASSETS       = "story";
+    public static final String ICON_ASSETS        = "icons";
     static final public String EXTERNAL           = "external";
     static final public String ROBOTUTOR_ASSETS   = "sdcard/robotutor_assets/assets";
-
+    static final public String LOCAL_STORY_AUDIO  = "sdcard/Download/RoboTutor/assets/story_questions";
 
     static final public String LTK_PROJECT_ASSETS = "projects";
     static final public String LTK_GLYPH_ASSETS   = "glyphs";
@@ -255,6 +393,7 @@ public class TCONST {
     static final public String DEFAULT            = "default";
 
     // CTutorNavigator Constants
+    // TODO this is so annoying... different objects use the same ENDTUTOR var
     public static final String ENDTUTOR        = "END_TUTOR";           // Terminate a tutor from within
     public static final String KILLTUTOR       = "KILL_TUTOR";          // Kill a tutor exteranlly
     public static final String CONTINUETUTOR   = "CONTINUE_TUTOR";
@@ -269,7 +408,12 @@ public class TCONST {
     public static final String ASSETS          = "ASSETS";
     public static final String RESOURCES       = "RESOURCE";
     public static final String EXTERN          = "EXTERN";
+    public static final String EXTERN_SHARED   = "EXTERN_SHARED";
     public static final String DEFINED         = "DEFINED";
+
+    public static final String DEBUG_STORY_TAG = "GENERAL_TSO";
+    public static final String DEBUG_HESITATE = "MATH_HESITATE";
+    public static final String DEBUG_MENU      = "DEBUG_MENU";
 
     // Navigator types
     final static public String SIMPLENAV       = "SIMPLE_NAVIGATOR";
@@ -280,7 +424,6 @@ public class TCONST {
     public static final String NEXTSCENE       = "NEXTSCENE";
     public static final String FIRST_SCENE     = "GOTO_FIRST_SCENE";
     public static final String REC_GLYPH       = "REC_GLYPH";
-
 
 
     // CActionTrack track types
@@ -310,6 +453,11 @@ public class TCONST {
     public static final String READY           = "READY";
 
     public static final String PLAY            = "PLAY";
+    //UHQ
+    public static final String PLAY_CLOZE      = "PLAY_CLOZE";
+    public static final String CLZ_ANIM_INCOMPLETE = "CLZ_ANIM_INCOMPLETE";
+    public static final String CLZ_ANIM_COMPLETE = "CLZ_ANIM_COMPLETE";
+    public static long CLOZE_END               = 0L;
     public static final String STOP            = "STOP";
     public static final String NEXT            = "NEXT";
     public static final String GOTO_NODE       = "GOTO_NODE";
@@ -323,6 +471,7 @@ public class TCONST {
     public static final String ENTER_SCENE     = "ENTER_SCENE";
 
     public static final String END_OF_GRAPH             = "END_OF_GRAPH";
+    public static final String APPLY_NODE               = "APPLY_NODE";
 
     public static final String APPLY_BEHAVIOR           = "APPLY_BEHAVIOR";
 
@@ -365,8 +514,6 @@ public class TCONST {
     public static final String CMD_GOTO         = "GOTONODE";
     public static final String CMD_NEXT         = "NEXT";
     public static final String CMD_LAUNCH       = "LAUNCH-TUTOR";
-    public static final String CMD_SET_FEATURE  = "FEATURE-ADD";
-    public static final String CMD_DEL_FEATURE  = "FEATURE-DEL";
 
 
     // Intrinsic types
@@ -384,6 +531,58 @@ public class TCONST {
     public static final String STARE_START = "STARE_START";
     public static final String STARE_STOP  = "STARE_STOP";
 
+
+    // Broadcasts for Intervention
+    public static final String I_TRIGGER_GESTURE = "GESTURE";
+    public static final String I_TRIGGER_STUCK = "STUCK";
+    public static final String I_TRIGGER_HESITATE = "HESITATE";
+    public static final String I_TRIGGER_FAILURE = "FAILURE";
+
+    // Intervention types
+    public static final String I_TYPE_KNOWLEDGE = "KNOWLEDGE";
+    public static final String I_TYPE_APPLICATION = "APPLICATION";
+
+    // Cancel broadcasts
+    public static final String I_CANCEL_STUCK = "X_STUCK";
+    public static final String I_CANCEL_HESITATE = "X_HESITATE";
+    public static final String I_CANCEL_GESTURE = "X_GESTURE";
+
+    public static final String I_MODAL_EXTRA = "MODAL";
+
+    public static final String EXIT_FROM_INTERVENTION = "EXIT_FROM_INTERVENTION"; // might be needed to resume paused activity, e.g. Akira
+    public static final String INTERVENTION_FOLDER = "sdcard/intervention";
+    public static final String INTERVENTION_TIMES_FILE = "TimeSpentPerAttempt.csv";
+    public static final String INTERVENTION_STUDENT_FILE = "intervention.csv";
+    public static final String UPDATE_INTERVENTION_FILE = "update_intervention.csv";
+
+    // CONSTANTS -- replace with Judith's thing.
+    public static final int  FAILURE_COUNT_BPOP = 9;
+    public static final Long HESITATE_TIME_BPOP = 6000L; // NOTE THAT THIS IS NOT RESETTING
+    public static final Long STUCK_TIME_BPOP = 20000L;
+    public static final Long GESTURE_TIME_BPOP = 6000L;
+
+    public static final int  FAILURE_COUNT_AKIRA = 9;
+    public static final Long HESITATE_TIME_AKIRA = 10000L;
+    public static final Long STUCK_TIME_AKIRA = -1L; // not applicable...
+    public static final Long GESTURE_TIME_AKIRA = 10000L;
+
+
+    public static final Long HESITATE_TIME_SPELL = 15000L;
+    public static final Long STUCK_TIME_SPELL = 18000L;
+    public static final Long GESTURE_TIME_SPELL = 13000L;
+
+    public static final Long HESITATE_TIME_PICMATCH = 18000L;
+    public static final Long STUCK_TIME_PICMATCH = 20000L;
+    public static final Long GESTURE_TIME_PICMATCH = 13000L;
+
+    public static final Long HESITATE_TIME_WRITE = 18000L;
+    public static final Long STUCK_TIME_WRITE = 20000L;
+    public static final long GESTURE_TIME_WRITE = 18000L;
+
+    public static final Long HESITATE_TIME_NUMCOMPARE = 9000L;
+    public static final Long STUCK_TIME_NUMCOMPARE = 12000L;
+    public static final Long GESTURE_TIME_NUMCOMPARE = 9000L;
+
     public static final String FTR_STORY_STARTING = "FTR_STORY_STARTING";
 
     public static final String FWCORRECT    = "FTR_RIGHT";
@@ -391,7 +590,11 @@ public class TCONST {
     public static final String FWUNKNOWN    = "FTR_UNRECOGNIZED";
     public static final String FTR_EOI      = "FTR_NOWORDS";
     public static final String FTR_EOD      = "FTR_EOD";
+    public static final String CONTINUE      = "CONTINUE";
     public static final String ALL_CORRECT  = "ALL_CORRECT";
+
+    public static final String LOG_CORRECT = "CORRECT";
+    public static final String LOG_INCORRECT = "INCORRECT";
 
     public static final String FALSE        = "FALSE";
     public static final String TRUE         = "TRUE";
@@ -423,11 +626,47 @@ public class TCONST {
     public static final int ALL_EVENTS         = 0xFFFFFFFF;
 
 
+    public static final String ASR_TIMED_START_EVENT    = "ASR_TIMED_START_EVENT";
+    public static final String ASR_RECOGNITION_EVENT    = "ASR_RECOGNITION_EVENT";
+    public static final String ASR_ERROR_EVENT          = "ASR_ERROR_EVENT";
+    public static final String ASR_SILENCE_EVENT        = "ASR_SILENCE_EVENT";
+    public static final String ASR_SOUND_EVENT          = "ASR_SOUND_EVENT";
+    public static final String ASR_WORD_EVENT           = "ASR_WORD_EVENT";
+    public static final String ASR_TIMEDSILENCE_EVENT   = "ASR_TIMEDSILENCE_EVENT";
+    public static final String ASR_TIMEDSOUND_EVENT     = "ASR_TIMEDSOUND_EVENT";
+    public static final String ASR_TIMEDWORD_EVENT      = "ASR_TIMEDWORD_EVENT";
+    public static final String UTTERANCE_COMPLETE_EVENT = "UTTERANCE_COMPLETE_EVENT";
+
+    public static final String ASR_ALL_TIMED_EVENTS   = "ASR_ALL_TIMED_EVENTS";
+    public static final String ASR_ALL_STATIC_EVENTS  = "ASR_ALL_STATIC_EVENTS";
+    public static final String ASR_ALL_EVENTS         = "ASR_ALL_EVENTS";
+
+    // Map script event names to bitmap ASR Listener conatants.
+    //
+    static public HashMap<String, Integer> ASREventMap = new HashMap<String, Integer>();
+
+    static {
+        ASREventMap.put(ASR_SILENCE_EVENT, TCONST.SILENCE_EVENT);
+        ASREventMap.put(ASR_SOUND_EVENT, TCONST.SOUND_EVENT);
+        ASREventMap.put(ASR_WORD_EVENT, TCONST.WORD_EVENT);
+        ASREventMap.put(ASR_TIMEDSILENCE_EVENT, TCONST.TIMEDSILENCE_EVENT);
+        ASREventMap.put(ASR_TIMEDSOUND_EVENT, TCONST.TIMEDSOUND_EVENT);
+        ASREventMap.put(ASR_TIMEDWORD_EVENT, TCONST.TIMEDWORD_EVENT);
+        ASREventMap.put(ASR_TIMED_START_EVENT, TCONST.TIMEDSTART_EVENT);
+
+        ASREventMap.put(ASR_ALL_TIMED_EVENTS,TCONST.ALLTIMED_EVENTS);
+        ASREventMap.put(ASR_ALL_STATIC_EVENTS,TCONST.ALL_EVENTS);
+        ASREventMap.put(ASR_ALL_EVENTS,TCONST.ALL_EVENTS);
+    }
+
+
+
     public static final int NOINTERVENTION = 0;
     public static final int INSPEECH       = 1;
     public static final int SAYWORD        = 2;
 
     public static final String STORYDATA   = "storydata.json";
+    public static final String STORYMCQ    = "mcq.json";
     public static final String STORYINDEX  = "story_index.json";
     public static final String SOURCEFILE  = "[file]";
     public static final String ASSETFILE   = "[asset]";
@@ -436,13 +675,7 @@ public class TCONST {
     public static final String TTS         = "TTS";
     public static final String ASR         = "ASR";
 
-    public static final String GLYPHLOG    = "glyphlog_";
-    public static final String DATASHOP    = "-DS";
-    public static final String JSONLOG     = ".json";
-    public static final boolean APPEND     = true;
-    public static final boolean REPLACE    = false;
-
-    public static final String GLYPH_DATA  = "glyphdata";
+    public static final String GLYPH_DATA  = "GLYPH_DATA";
 
 
     // LTK messaging constants
@@ -452,7 +685,16 @@ public class TCONST {
     public static final String FW_RESPONSE = "FW_RESPONSE";
 
     public static final String WRITINGTUTOR_FOLDER      = "/WritingTutor/";
-    public static final String ROBOTUTOR_FOLDER         = "/RoboTutor/";
+    public static final String HOT_LOG_FOLDER = "/RTFace_Login_HOT/";
+    public static final String READY_LOG_FOLDER = "/RTFace_Login/";
+
+    public static final String HOT_LOG_FOLDER_PERF = "/RTFace_Login_HOT/"; // use same as normal logs
+    public static final String READY_LOG_FOLDER_PERF = "/RTFace_Login/";    // use same as normal logs
+
+    public static final String INTERVENTION_LOG_FOLDER = "/InterventionLogs/";
+
+    public static final String AUDIO_LOG_FOLDER = "/RTFace_Login_Audio/";
+
     public static final String ROBOTUTOR_ASSET_FOLDER   = "/robotutor_assets/";
     public static final String GLYPHS_FOLDER            = "/glyphs/";
 
@@ -464,11 +706,6 @@ public class TCONST {
     // TTS command constants
     public static final String SAY             = "SAY";
     public static final String SET_RATE        = "SET_RATE";
-
-
-    // Preference keys
-    public static final String ENGINE_INSTANCE = "RoboTutor";
-    public static final String CURRENT_TUTOR   = "tutor";
 
 
     // Number Listeneing Component
@@ -496,10 +733,10 @@ public class TCONST {
     public static final String DIGIT2_WORDS_VAR  = ".digit2Words";
     public static final String DIGIT1_WORDS_VAR  = ".digit1Words";
 
-
     // Generic error codes
     public static final String GENERIC_RIGHT  = "FTR_RIGHT";
     public static final String GENERIC_WRONG  = "FTR_WRONG";
+    public static final String NEXTTURN = "THRD_WRONG";
     public static final String GENERIC_SUCCESSIVEWRONG = "FTR_SWRONG";
     public static final boolean TRUE_ERROR    = true;
     public static final boolean TRUE_NOERROR  = true;
@@ -592,33 +829,52 @@ public class TCONST {
 
     // READING Tutor State names  -- RTC Reading Tutor Component
 
-    public static final String PAGEFLIP_BUTTON = "PAGE_FLIP_BUTTON";
-    public static final String SPEAK_BUTTON    = "SPEAK_BUTTON";
+    public static final String PAGEFLIP_BUTTON = "PAGE_FLIP_CLICK";
+    public static final String SPEAK_BUTTON    = "SPEAK_CLICK";
 
     public static final String EMPTY = "";
 
     public static final int INCR = 1;
     public static final int DECR = -1;
 
-    public static final String RTC_VAR_PAGESTATE  = ".pageState";
-    public static final String RTC_VAR_PARASTATE  = ".paraState";
-    public static final String RTC_VAR_LINESTATE  = ".lineState";
-    public static final String RTC_VAR_WORDSTATE  = ".wordState";
-    public static final String RTC_VAR_ATTEMPT    = ".attempt";
-    public static final String LAST               = "LAST";
-    public static final String NOT_LAST           = "NOT_LAST";
+    public static final String RTC_VAR_ECHOSTATE   = ".echoState";
+    public static final String RTC_VAR_PARROTSTATE = ".parrotState";
+    // Generic question state flag
+    public static final String RTC_VAR_QUESTIONSTATE = ".questionState";
+    public static final String RTC_VAR_CLOZESTATE = ".clozeState";
+    public static final String TO_CLOZE = ".toCloze";
+
+    public static final String RTC_VAR_SILENCESTATE = ".silenceState";
+    // Generic question audio file
+    public static final String RTC_QUESTION_AUDIO = ".questionAudio";
+    public static final String RTC_SILENCE = ".silence";
+    public static final String COMPLETE = "COMPLETE";
+    public static final String RTC_VAR_PAGESTATE   = ".pageState";
+    public static final String RTC_VAR_PARASTATE   = ".paraState";
+    public static final String RTC_VAR_LINESTATE   = ".lineState";
+    public static final String RTC_VAR_WORDSTATE   = ".wordState";
+    public static final String RTC_VAR_ATTEMPT     = ".attempt";
+    public static final String LAST                = "LAST";
+    public static final String NOT_LAST            = "NOT_LAST";
+    //UHQ
+    public static final String HAS_DISTRACTOR      = ".distractor";
+
 
     public static final String RTC_VAR_STATE         = ".storyState";
     public static final String RTC_PARAGRAPHCOMPLETE = "PARAGRAPH_COMPLETE";
     public static final String RTC_PAGECOMPLETE      = "PAGE_COMPLETE";
     public static final String RTC_STORYCMPLETE      = "STORY_COMPLETE";
     public static final String RTC_LINECOMPLETE      = "LINE_COMPLETE";
+    //Generic question state of completion
     public static final String RTC_CLEAR             = "";
 
-    public static final String RTC_VAR_WORDVALUE  = ".currentWord";
-    public static final String RTC_VAR_INDEX      = ".wordindex";
-    public static final String RTC_VAR_REMAINING  = ".remainingWords";
-    public static final String RTC_VAR_SENTENCE   = ".sentence";
+    public static final String RTC_VAR_PROMPT      = ".prompt";
+    public static final String RTC_VAR_PAGE_PROMPT = ".page_prompt";
+    public static final String RTC_VAR_WORDVALUE   = ".currentWord";
+    public static final String RTC_VAR_INDEX       = ".wordindex";
+    public static final String RTC_VAR_REMAINING   = ".remainingWords";
+    public static final String RTC_VAR_SENTENCE    = ".sentence";
+    public static final String RTC_VAR_UTTERANCE   = ".utterance";
 
     //Akira Game Prompt Situation
     public static final String PROMPT_1LEFT = "PROMPT_1LEFT";
@@ -630,4 +886,48 @@ public class TCONST {
     public static final String PROMPT_3 = "PROMPT_3";
     public static final String PROMPT_3V = "PROMPT_3V";
 
+
+    // Writing behavior...
+    public static final int WRITING_DATA_LIMIT = 10;
+
+    // Counting
+    public static final String COUNTING_DEBUG_LOG = "COUNTING_DEBUG_LOG";
+
+
+    // Data source debugger
+
+    public static final String TAG_DEBUG_AKIRA = "akira";
+    public static final String TAG_DEBUG_ASM = "math";
+    public static final String TAG_DEBUG_TAP_COUNT = "countingx";
+    public static final String TAG_DEBUG_BPOP_LTR = "bpop.ltr.mix";
+    public static final String TAG_DEBUG_BPOP_WRD = "bpop.wrd";
+    public static final String TAG_DEBUG_BPOP_PHON = "bpop.phon";
+    public static final String TAG_DEBUG_BPOP_NUM = "bpop.num";
+    public static final String TAG_DEBUG_BPOP_SHP = "bpop.shp";
+    public static final String TAG_DEBUG_BPOP_EX = "bpop.ex";
+
+    public static final String ROBO_DEBUG_FILE_TAP_COUNT = "countingx_test.json";
+    public static final String ROBO_DEBUG_FILE_AKIRA = "akira_test.json";
+    public static final String ROBO_DEBUG_FILE_ASM = "math_test.json";
+    public static final String ROBO_DEBUG_FILE_BPOP = "bpop.json";
+
+
+
+    // Debugger Thumb key words
+    // NEW_THUMBS trace me
+    public enum Thumb {
+        AKIRA, BPOP_NUM, GL, MN, BPOP_LTR, CX_1, CX_10, CX_100, MATH, NUMSCALE, STORY_1, STORY_2, STORY_3, STORY_4, STORY_5, SONG, STORY_NONSTORY, WRITE, SPELLING, PICMATCH, NUMCOMPARE, COMPREHENSION, PLACEVALUE, BIGMATH, NOTHING
+    }
+
+    // debug vals
+    public static final String DEBUG_AUDIO_FILE = "DEBUG_AUDIO";
+
+    public static final String PLACEMENT_TAG = "DEBUG_PLACEMENT";
+    public static final String MENU_BUG_TAG  = "MENU_BUG";
+    public static final String MATH_PLACEMENT = "MATH_PLACEMENT"; // TOGGLE_PLACEMENT trace me...
+    public static final String MATH_PLACEMENT_INDEX = "MATH_PLACEMENT_INDEX";
+    public static final String WRITING_PLACEMENT = "WRITING_PLACEMENT";
+    public static final String WRITING_PLACEMENT_INDEX = "WRITING_PLACEMENT_INDEX";
+
+    public static final String DEBUG_CSV = "DEBUG_CSV";
 }

@@ -1,4 +1,4 @@
-package cmu.xprize.util;
+package cmu.xprize.comp_logging;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +22,7 @@ public class CPreferenceCache {
         context = app;
         idMap   = new HashMap<>();
 
-        return updateTutorGUID(TCONST.ENGINE_INSTANCE);
+        return updateTutorGUID(TLOG_CONST.ENGINE_INSTANCE);
     }
 
 
@@ -46,7 +46,7 @@ public class CPreferenceCache {
         // "tutor" may then be used to anonymously access the current tutors key
         //
         idMap.put(key, value);
-        idMap.put(TCONST.CURRENT_TUTOR, value);
+        idMap.put(TLOG_CONST.CURRENT_TUTOR, value);
 
         editor.putInt(key, ordinal + 1);
         editor.apply();
@@ -75,7 +75,7 @@ public class CPreferenceCache {
         // "tutor" may then be used to anonymously access the current tutors key
         //
         idMap.put(key, value);
-        idMap.put(TCONST.CURRENT_TUTOR, value);
+        idMap.put(TLOG_CONST.CURRENT_TUTOR, value);
 
         editor.putString(key, GUID);
         editor.apply();
@@ -102,7 +102,7 @@ public class CPreferenceCache {
         // Find a unique GUID that doesn't exist in the preferences cache
         //
         do {
-            for (int i1 = 0; i1 < TCONST.GUID_LEN; i1++) {
+            for (int i1 = 0; i1 < TLOG_CONST.GUID_LEN; i1++) {
                 try {
                     guid += guidMap.charAt((int) (Math.random() * guidMap.length()));
                 }
